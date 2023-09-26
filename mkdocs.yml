@@ -1,0 +1,21 @@
+site_name: Fale com a Gupy
+
+theme:
+  name: material
+  palette:
+    primary: deep blue
+  language: pt
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+
+extra_css:
+  - css/custom.css
