@@ -1,9 +1,10 @@
-import requests
-from bs4 import BeautifulSoup
-import streamlit as st
-import openai
-from dotenv import load_dotenv
 import os
+
+import openai
+import requests
+import streamlit as st
+from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()
@@ -67,22 +68,12 @@ def ask_gpt(question, context):
 
 def main():
     
-    st.markdown(
-        """
-        <style>
-            body {
-                color: #fff;
-                background-color: #13335f;
-            }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
     # Adiciona a logo
-    st.image("logo.png", use_column_width=True)
+    col1, col2, col3 = st.columns([2,3,2])  # Ajustar os números para obter a centralização desejada
+    with col2:
+        st.image("logo.png", width=300) 
     st.title("Fale com a Gupy!")
-    termo = st.text_input("Digite a vaga que procura: (ex: engenheiro de dados junior)")
+    termo = st.text_input("Digite a vaga que procura: (ex: engenheiro de dados)")
 
     if st.button('Raspar URLs'):
         success, results = process_term(termo)
@@ -95,7 +86,7 @@ def main():
     if 'results' in st.session_state:
         context = "\n".join(st.session_state['results'])
         question = st.text_input("Digite sua pergunta a Gupy: (ex: Quais os 5 principais requisitos para a vaga?)")
-        if st.button('Perguntar ao GPT-3.5'):
+        if st.button('Perguntar a Gupy'):
             answer = ask_gpt(question, context)
             st.write(f"Resposta: {answer}")
 
