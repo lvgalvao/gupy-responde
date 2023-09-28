@@ -56,9 +56,9 @@ def process_term(termo: str, limit_hrefs: int = 10):
 
 def ask_gpt(question, context):
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-3.5-turbo-16k",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": "Você é a Gupy, uma útil assistente com dados de um site com vagas"},
             {"role": "user", "content": context},
             {"role": "user", "content": question}
         ]
@@ -66,8 +66,23 @@ def ask_gpt(question, context):
     return response.choices[0].message['content'].strip()
 
 def main():
+    
+    st.markdown(
+        """
+        <style>
+            body {
+                color: #fff;
+                background-color: #13335f;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Adiciona a logo
+    st.image("logo.png", use_column_width=True)
     st.title("Fale com a Gupy!")
-    termo = st.text_input("Digite a vaga que procura: (ex: desenvolvedor)")
+    termo = st.text_input("Digite a vaga que procura: (ex: engenheiro de dados junior)")
 
     if st.button('Raspar URLs'):
         success, results = process_term(termo)
@@ -79,7 +94,7 @@ def main():
 
     if 'results' in st.session_state:
         context = "\n".join(st.session_state['results'])
-        question = st.text_input("Digite sua pergunta a Gupy: (ex: Quais requisitos para a vaga?)")
+        question = st.text_input("Digite sua pergunta a Gupy: (ex: Quais os 5 principais requisitos para a vaga?)")
         if st.button('Perguntar ao GPT-3.5'):
             answer = ask_gpt(question, context)
             st.write(f"Resposta: {answer}")
