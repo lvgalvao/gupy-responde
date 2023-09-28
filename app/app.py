@@ -75,8 +75,8 @@ def main():
     # col1, col2, col3 = st.columns([2,3,2])  # Ajustar os números para obter a centralização desejada
     # with col2:
     #     st.image(logo_url, width=300) 
-    # st.title("Fale com a Gupy!")
-    # termo = st.text_input("Digite a vaga que procura: (ex: engenheiro de dados)")
+    st.title("Fale com a Gupy!")
+    termo = st.text_input("Digite a vaga que procura: (ex: engenheiro de dados)")
 
     if st.button('Raspar URLs'):
         success, results = process_term(termo)
