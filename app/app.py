@@ -68,7 +68,7 @@ def ask_gpt(question, context):
 
 def main():
     
-    abs_path = os.path.abspath("logo.png")
+    abs_path = os.path.abspath("../logo.png")
 
     # Adiciona a logo
     col1, col2, col3 = st.columns([2,3,2])  # Ajustar os números para obter a centralização desejada
