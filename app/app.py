@@ -1,42 +1,32 @@
+# app.py
+
 import streamlit as st
-from app.get_data import url_builder, fetch_page, extract_hrefs, extract_body_text, save_to_txt
-from app.chatgpt import read_context_from_txt, ask_gpt
+from get_data import process_term, read_from_txt
+from chatgpt import ask_gpt
 
 def main():
-    st.title("Webscraping e OpenAI Streamlit App")
+    st.title("Fale com a Gupy!")
 
     # Campo de entrada para o termo de pesquisa
-    termo = st.text_input("Digite o termo de busca:")
+    termo = st.text_input("Digite a vaga que procura: (ex: engenheiro de dados pleno)")
 
     # Botão para executar webscraping
     if st.button('Raspar URLs'):
-        # Reiniciando o arquivo 'output.txt'
-        with open("output.txt", "w"):
-            pass
         
-        url = url_builder(termo)
-        page_content = fetch_page(url)
-        hrefs = extract_hrefs(page_content)
+        success = process_term(termo, limit_hrefs=10)  # Limitando a 2 hrefs válidos para o Streamlit
         
-        if len(hrefs) == 1:
+        if not success:
             st.error("Você deve digitar outro termo")
             return
-
-        hrefs = [href for href in hrefs if "://" in href][:2]  # Limitando a 2 hrefs válidos
-
-        for href in hrefs:
-            st.write(f"Processando {href}...")
-            body_text = extract_body_text(href)
-            save_to_txt(body_text)
 
         st.success("Webscraping Finalizado!")
 
     # Campo de entrada para a pergunta ao modelo GPT-4
-    question = st.text_input("Digite sua pergunta ao GPT-4:")
+    question = st.text_input("Digite sua pergunta a Gupy: (ex: Quais os 5 principais requisitos para a vaga?)")
 
     # Botão para executar a pergunta ao modelo GPT-4
     if st.button('Perguntar ao GPT-4'):
-        context = read_context_from_txt()
+        context = read_from_txt()
         answer = ask_gpt(question, context)
         st.write(f"Resposta: {answer}")
 

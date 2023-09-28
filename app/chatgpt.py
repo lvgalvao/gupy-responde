@@ -21,7 +21,8 @@ def ask_gpt(question, context):
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": context},
             {"role": "user", "content": question}
-        ]
+        ],
+        max_tokens=400  # Limite a resposta para 400 tokens
     )
     return response.choices[0].message['content'].strip()
 
